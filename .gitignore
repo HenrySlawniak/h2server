@@ -1,0 +1,8 @@
+*.exe
+certs/*
+.bin/*
+*.key
+*.crt
+*.secret
+.rnd
+.logs/*

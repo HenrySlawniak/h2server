@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>--</title>
+  <link defer rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <video src="/static/nosauce.webm" controls loop></video>
+    </div>
+  </div>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", _ => {
+      var vid = document.querySelector("video");
+      window.requestAnimationFrame(_ => {
+        vid.volume = 0.01;
+        vid.play();
+        vid.onclick = function (){
+          if (vid.paused) {
+            vid.play();
+          }
+          else {
+            vid.pause();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
