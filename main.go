@@ -80,6 +80,8 @@ func main() {
 	}
 	log.Info("Go: " + runtime.Version())
 
+	loadDomainList()
+
 	setupHTTPServer()
 	addRoutesToRouter()
 
