@@ -36,9 +36,9 @@ var server Server
 
 func (s Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Server", fmt.Sprintf("Gate v%s (%s)", commit, buildTime))
-	if !devMode {
-		w.Header().Set("Content-Security-Policy", fmt.Sprintf("default-src https://*.%[1]s; form-action https://*.%[1]s; block-all-mixed-content; upgrade-insecure-requests", domain))
-	}
+	// if !devMode {
+	// 	w.Header().Set("Content-Security-Policy", fmt.Sprintf("default-src https://*.%[1]s; form-action https://*.%[1]s; block-all-mixed-content; upgrade-insecure-requests", domain))
+	// }
 	gziphandler.GzipHandler(s.r).ServeHTTP(w, req)
 }
 
