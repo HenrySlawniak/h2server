@@ -1,0 +1,112 @@
+<html>
+
+<head>
+  <title>Stop All The Downloadin'</title>
+  <link rel="stylesheet" href="style.css" />
+  <link defer href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta property="og:title" content="Hey kid! Stop all the downloading!" />
+  <meta property="og:url" content="https://stopallthe.download/ing/" />
+  <meta property="og:video" content="https://henry.computer/video.mp4" />
+  <meta property="og:video:secure_url" content="https://henry.computer/video.mp4" />
+  <meta property="og:video:type" content="video/mp4" />
+  <meta property="og:video:width" content="352" />
+  <meta property="og:video:height" content="262" />
+
+  <meta name="twitter:card" content="player" />
+  <meta name="twitter:site" content="@meggavolts" />
+  <meta name="twitter:title" content="Hey Kid! Stop all the downloading!" />
+  <meta name="twitter:player:width" content="352" />
+  <meta name="twitter:player:height" content="262" />
+  <meta name="twitter:player:stream" content="https://henry.computer/video.mp4" />
+  <meta name="twitter:player:stream:content_type" content="video/mp4" />
+  <meta name="twitter:player" content="https://henry.computer"/ >
+</head>
+
+<body>
+  <div class="container">
+    <div class="item-spacer"></div>
+    <h1>Stop All The Downloading Tools</h1>
+    <div class="item-spacer"></div>
+  </div>
+  <div class="container">
+    <div class="item-spacer"></div>
+    <div class="item">
+      <div class="item-heading">
+        <h1 class="item-title"><a href="provision"><i class="material-icons">link</i> Provisioning</a></h1>
+      </div>
+      <div class="item-content">
+        A simple script to quickly setup a Centos 7 server
+        <input class="copy-field" type="text" value="wget https://stopallthe.download/ing/provision" readonly />
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-heading">
+        <h1 class="item-title"><a href="install-go"><i class="material-icons">link</i> Golang Installer</a></h1>
+      </div>
+      <div class="item-content">
+        A simple script to install the current version of Go
+        <input class="copy-field" type="text" value="wget https://stopallthe.download/ing/install-go" readonly />
+      </div>
+    </div>
+    <div class="item-spacer"></div>
+  </div>
+  <div class="container" id="script-container">
+    <div class="item-spacer"></div>
+    <pre id="script-content">I like turtles.</pre>
+    <div class="item-spacer"></div>
+  </div>
+  <script>
+    function getContent(url, callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = "text";
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          callback(xhr.responseText);
+        }
+      };
+
+      xhr.open("GET", url, true);
+      xhr.send(null);
+    }
+
+    function fillScript(content) {
+      if (content === null) {
+        return;
+      }
+      var pre = document.querySelector("#script-content");
+      console.log(content)
+      pre.innerHTML = safe_tags(content);
+    }
+
+    document.querySelectorAll(".copy-field").forEach(function(e, i, a) {
+      e.setAttribute("onClick", "this.select();")
+    });
+
+    document.querySelectorAll("a").forEach(function(e, i, a) {
+      e.addEventListener('click', function(e) {
+        if (e.ctrlKey) {
+          return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        getContent(e.target.getAttribute('href'), fillScript);
+      }, true);
+    });
+
+    function safe_tags(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+  </script>
+</body>
+
+</html>
+</body>
+
+</html>
+</body>
+
+</html>
+</body>
+
+</html>

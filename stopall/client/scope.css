@@ -1,0 +1,116 @@
+/* Different font */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+body,
+html {
+    color: #000;
+    margin: 0 auto;
+}
+.minWidth-250 {
+    line-height: 12px;
+    font-size: 10pt;
+}
+/* Make Ticket History a little easier to use */
+/* DEPRECATED since alerts
+#right-sidebar {
+    z-index: 100;
+    margin-top: 8px;
+    margin-right: 8px;
+    width: 500px;
+    max-height: 500px;
+}
+#right-sidebar .tabs {
+    max-height: 450px;
+    overflow-y: scroll;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    border-radius: 6px;
+    background: #fff;
+}
+#right-sidebar .tabs::-webkit-scrollbar {
+    width: 1em;
+}
+#right-sidebar .tabs::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+#right-sidebar .tabs::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 12px;
+}
+#right-sidebar #activityTabContent {
+    background: #fefefe;
+    border-radius: 0 0 6px 6px;
+}
+*/
+
+/* Get rid of the modal shadow so we can copy paste from the body into the modals */
+.modal-backdrop {
+    display: none;
+}
+.modal {
+    max-width: 750px;
+    max-height: 90%;
+    height: 100%;
+    width: 100%;
+    bottom: 6px;
+    top: auto;
+    left: 6px;
+    right: 0;
+    pointer-events: none;
+    margin-bottom: 6px;
+}
+.modal * {
+    pointer-events: all;
+}
+.modal-dialog {
+    bottom: 10;
+    max-width: 90%;
+    width: 100% !important;
+    box-sizing: border-box;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-left: 6px;
+    max-height: 100%;
+}
+
+#ticketSelectionTableModal {
+    max-width: 90%;
+    width: 100%;
+    max-height: 100%;
+    pointer-events: all;
+}
+#ticketSelectionTableModal .modal-dialog {
+    max-width: 90%;
+    width: 100%;
+}
+
+/* Remove the danger reset button */
+.resetTableDefaults {
+    display: none;
+}
+
+.col-lg-3 .col-md-3 .col-sm-3 .col-xs-3 {
+  padding:0;
+  width: 150px !important;
+}
+
+/* Make the last reply preview actually usable */
+#smartDropShell.postsTemplate {
+    pointer-events: none;
+    max-width: 40vw;
+    margin-left: 45%;
+}
+
+#smartDropShell.postsTemplate .ticketPost {
+    max-width: 30vw;
+}
+
+#smartDropShell.postsTemplate .avatar {
+    display: none;
+}
+
