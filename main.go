@@ -21,6 +21,7 @@
 package main
 
 import (
+	"bufio"
 	"crypto/tls"
 	"flag"
 	"github.com/go-playground/log"
@@ -165,4 +166,35 @@ func addToDomainList(domain string) {
 	domainList = append(domainList, domain)
 
 	m.HostPolicy = autocert.HostWhitelist(domainList...)
+}
+
+func loadDomainList() {
+	var f *os.File
+	var err error
+	if _, err = os.Stat("domains.txt"); os.IsNotExist(err) {
+		f, err = os.Create("domains.txt")
+		if err != nil {
+			log.Fatal(err)
+			panic(err)
+		}
+	} else {
+		f, err = os.Open("domains.txt")
+		if err != nil {
+			log.Fatal(err)
+			panic(err)
+		}
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+
+	for scanner.Scan() {
+		addToDomainList(scanner.Text())
+	}
+
+	log.Noticef("There are now %d domains registered\n", len(domainList))
 }

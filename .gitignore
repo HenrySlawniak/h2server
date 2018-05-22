@@ -6,3 +6,4 @@ certs/*
 *.secret
 .rnd
 .logs/*
+sites/*
