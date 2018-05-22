@@ -21,7 +21,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -38,9 +37,6 @@ var server Server
 func (s Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Server", "ᕕ( ᐛ )ᕗ")
 	host := strings.Split(req.Host, ":")[0]
-	if !devMode {
-		w.Header().Set("Content-Security-Policy", fmt.Sprintf("default-src https://*.%[1]s; form-action https://*.%[1]s; block-all-mixed-content; upgrade-insecure-requests", host))
-	}
 	gziphandler.GzipHandler(s.r).ServeHTTP(w, req)
 }
 
