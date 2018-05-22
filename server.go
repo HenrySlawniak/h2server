@@ -24,7 +24,6 @@ import (
 	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/mux"
 	"net/http"
-	"strings"
 )
 
 // Server wraps our *mux.Router so we can globally modify responses
@@ -36,7 +35,6 @@ var server Server
 
 func (s Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Server", "ᕕ( ᐛ )ᕗ")
-	host := strings.Split(req.Host, ":")[0]
 	gziphandler.GzipHandler(s.r).ServeHTTP(w, req)
 }
 
