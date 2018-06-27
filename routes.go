@@ -21,7 +21,6 @@
 package main
 
 import (
-	"github.com/go-playground/log"
 	"net/http"
 	"os"
 	"strings"
