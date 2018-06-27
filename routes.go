@@ -75,11 +75,11 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	host := strings.Split(r.Host, ":")[0]
 
-	if !domainIsRegistered(host) {
-		log.Debugf("Host is %s", host)
-		// Make sure we do this syncronousley
-		addToDomainList(host)
-	}
+	// if !domainIsRegistered(host) {
+	// 	log.Debugf("Host is %s", host)
+	// 	// Make sure we do this syncronousley
+	// 	addToDomainList(host)
+	// }
 
 	staticFolder := "./sites/" + host
 	if _, err := os.Stat(staticFolder); err != nil {
