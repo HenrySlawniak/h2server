@@ -14,7 +14,7 @@ class SnowFlake {
     this.x = this.randBetween(0, window.innerWidth);
     this.y = this.randBetween(0, -window.innerHeight);
     this.vx = this.randBetween(-3, 3);
-    this.vy = this.randBetween(2, 5);
+    this.vy = this.randBetween(0.2, 3);
     this.radius = this.randBetween(1, 4);
     this.alpha = this.randBetween(0.1, 0.9);
   }
@@ -55,7 +55,7 @@ class Snow {
   }
 
   createSnowFlakes() {
-    const flakeCount = window.innerWidth / 2;
+    const flakeCount = window.innerWidth / 4;
     this.snowFlakes = [];
 
     for (let i=0; i < flakeCount; i++) {
