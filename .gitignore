@@ -8,3 +8,4 @@ certs/*
 .logs/*
 sites/*
 domains.txt
+./h2server
