@@ -44,6 +44,10 @@ var sums = map[string]*fileSum{}
 
 var mu = &sync.Mutex{}
 
+func init() {
+	mime.AddExtensionType(".webm", "video/webm")
+}
+
 func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int) {
 	if path == "./client/" {
 		path = "./client/index.html"
