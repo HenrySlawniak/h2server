@@ -49,6 +49,8 @@ var (
 
 func init() {
 	flag.Parse()
+	os.Setenv("GODEBUG", os.Getenv("GODEBUG")+",tls13=1")
+
 	cLog := console.New(true)
 	cLog.SetTimestampFormat(time.RFC3339)
 	log.AddHandler(cLog, log.AllLevels...)
