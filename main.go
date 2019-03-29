@@ -26,6 +26,7 @@ import (
 	"flag"
 	"github.com/go-playground/log"
 	"github.com/go-playground/log/handlers/console"
+	"github.com/newrelic/go-agent"
 	"golang.org/x/crypto/acme/autocert"
 	"golang.org/x/net/http2"
 	"net/http"
@@ -45,6 +46,8 @@ var (
 	listen             string
 	dial               string
 	accessLogInConsole bool
+	nrKey              string
+	nrApp              newrelic.Application
 )
 
 func init() {
@@ -58,17 +61,28 @@ func init() {
 	// <phil> I hate this stuff so much, I try to avoid it - environment variables have shortened my life in I'm sure a measurable way
 	devMode = os.Getenv("DEV") == "true" || false
 	accessLogInConsole = os.Getenv("CONSOLE_ACCESS") == "true" || false
+	var found bool
 
-	if os.Getenv("DOMAIN") == "" {
+	domain, found = os.LookupEnv("DOMAIN")
+	if !found {
 		domain = "henry.network"
-	} else {
-		domain = os.Getenv("DOMAIN")
 	}
 
-	if os.Getenv("LISTEN") == "" {
+	listen, found = os.LookupEnv("LISTEN")
+	if !found {
 		listen = ":https"
-	} else {
-		listen = os.Getenv("LISTEN")
+
+	}
+
+	nrKey, found = os.LookupEnv("NR_KEY")
+	if found {
+		log.Info("Setting up New Relic Go Agent")
+		var err error
+		nrConf := newrelic.NewConfig("h2server", nrKey)
+		nrApp, err = newrelic.NewApplication(nrConf)
+		if err != nil {
+			log.Panic(err)
+		}
 	}
 }
 

@@ -23,6 +23,7 @@ package main
 import (
 	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/mux"
+	"github.com/newrelic/go-agent"
 	"net/http"
 )
 
@@ -35,7 +36,12 @@ var server Server
 
 func (s Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Server", "ᕕ( ᐛ )ᕗ")
-	gziphandler.GzipHandler(s.r).ServeHTTP(w, req)
+	if nrApp != nil {
+		_, handler := newrelic.WrapHandle(nrApp, "/", gziphandler.GzipHandler(s.r))
+		handler.ServeHTTP(w, req)
+	} else {
+		gziphandler.GzipHandler(s.r).ServeHTTP(w, req)
+	}
 }
 
 func setupHTTPServer() {
