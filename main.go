@@ -31,6 +31,7 @@ import (
 	"golang.org/x/net/http2"
 	"net/http"
 	"os"
+	"path/filepath"
 	"runtime"
 	"time"
 )
@@ -49,6 +50,9 @@ var (
 	accessLogInConsole bool
 	nrKey              string
 	nrApp              newrelic.Application
+
+	logFile = filepath.Join(".logs", "access.log")
+	f       *os.File
 )
 
 func init() {
@@ -88,9 +92,21 @@ func init() {
 			log.Panic(err)
 		}
 	}
+
+	var err error
+
+	if _, err = os.Stat(filepath.Dir(logFile)); os.IsNotExist(err) {
+		os.MkdirAll(filepath.Dir(logFile), 0755)
+	}
+
+	f, err = os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0750)
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 func main() {
+	defer f.Close()
 	log.Info("Starting h2server")
 	if buildTime != "" {
 		log.Info("Built: " + buildTime)

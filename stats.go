@@ -24,8 +24,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -73,34 +71,5 @@ func logRequest(w http.ResponseWriter, r *http.Request, bytes int64, responseCod
 		r.UserAgent(),
 	)
 
-	logFile := filepath.Join(".logs", strings.ToLower(host)+".access.log")
-	if _, err = os.Stat(filepath.Dir(logFile)); os.IsNotExist(err) {
-		os.MkdirAll(filepath.Dir(logFile), 0755)
-	}
-
-	f, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0750)
-	if err != nil {
-		log.Error(err)
-	}
-	defer f.Close()
-
 	f.WriteString(logStr + "\n")
-
-	logFile2 := filepath.Join(".logs", "access.log")
-	if _, err = os.Stat(filepath.Dir(logFile)); os.IsNotExist(err) {
-		os.MkdirAll(filepath.Dir(logFile), 0755)
-	}
-
-	f2, err := os.OpenFile(logFile2, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0750)
-	if err != nil {
-		log.Error(err)
-	}
-	defer f2.Close()
-
-	f2.WriteString(logStr + "\n")
-
-	if accessLogInConsole {
-		log.Info(logStr)
-	}
-
 }
