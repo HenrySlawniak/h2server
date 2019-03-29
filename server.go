@@ -24,7 +24,6 @@ import (
 	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/mux"
 	"github.com/newrelic/go-agent"
-	nrgorilla "github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
 	"net/http"
 )
 
@@ -46,6 +45,4 @@ func setupHTTPServer() {
 	server = Server{
 		r: mux.NewRouter(),
 	}
-
-	nrgorilla.InstrumentRoutes(server.r, nrApp)
 }

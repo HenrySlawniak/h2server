@@ -21,6 +21,7 @@
 package main
 
 import (
+	nrgorilla "github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
 	"net/http"
 	"os"
 	"strings"
@@ -37,6 +38,8 @@ func addRoutesToRouter() {
 	server.r.Host("stopallthe.download").Name("stopall").PathPrefix("/").HandlerFunc(server.stopAllRootHandler)
 
 	server.r.PathPrefix("/").HandlerFunc(server.indexHandler).Name("catch-all")
+
+	server.r = nrgorilla.InstrumentRoutes(server.r, nrApp)
 }
 
 // GetIP returns the remote ip of the request, by stripping off the port from the RemoteAddr
