@@ -72,4 +72,8 @@ func logRequest(w http.ResponseWriter, r *http.Request, bytes int64, responseCod
 	)
 
 	f.WriteString(logStr + "\n")
+
+	if accessLogInConsole {
+		log.Info(logStr)
+	}
 }
