@@ -8,27 +8,6 @@
   version = "v1.0.1"
 
 [[projects]]
-  name = "github.com/go-playground/ansi"
-  packages = ["."]
-  revision = "777788a9be1a7296979a999c86b251fc777077a9"
-  version = "v2.1.0"
-
-[[projects]]
-  name = "github.com/go-playground/errors"
-  packages = ["."]
-  revision = "14d2d30656a95a5fa5a17d2e33540269eda5f158"
-  version = "v3.2.1"
-
-[[projects]]
-  name = "github.com/go-playground/log"
-  packages = [
-    ".",
-    "handlers/console"
-  ]
-  revision = "a9482c30dfae4204e45f6368d982493d1395b59d"
-  version = "v6.2.1"
-
-[[projects]]
   name = "github.com/gorilla/context"
   packages = ["."]
   revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
@@ -41,11 +20,41 @@
   version = "v1.6.2"
 
 [[projects]]
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
+  version = "v1.0.2"
+
+[[projects]]
+  name = "github.com/newrelic/go-agent"
+  packages = [
+    ".",
+    "_integrations/nrgorilla/v1",
+    "_integrations/nrlogrus",
+    "internal",
+    "internal/cat",
+    "internal/jsonx",
+    "internal/logger",
+    "internal/racedetector",
+    "internal/sysinfo",
+    "internal/utilization"
+  ]
+  revision = "5adc3b70de72198b5e21a6a811891309a0dcfba4"
+  version = "v2.7.0"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "dae0fa8d5b0c810a8ab733fbd5510c7cae84eca4"
+  version = "v1.4.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
     "acme",
-    "acme/autocert"
+    "acme/autocert",
+    "ssh/terminal"
   ]
   revision = "1a580b3eff7814fc9b40602fd35256c63b50f491"
 
@@ -59,6 +68,15 @@
     "idna"
   ]
   revision = "9ef9f5bb98a1fdc41f8cf6c250a4404b4085e389"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -84,6 +102,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5dcaf5422a64767cba576ce5c79e58e98aa48b3c35d6813278c12b3ab1042765"
+  inputs-digest = "48fc491abe29b84d75c70430e144c73e7d091fb22cf3f70e3778de990d93b1da"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -24,6 +24,7 @@ import (
 	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/mux"
 	"github.com/newrelic/go-agent"
+	nrgorilla "github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
 	"net/http"
 )
 
@@ -36,16 +37,15 @@ var server Server
 
 func (s Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Server", "ᕕ( ᐛ )ᕗ")
-	if nrApp != nil {
-		_, handler := newrelic.WrapHandle(nrApp, "/", gziphandler.GzipHandler(s.r))
-		handler.ServeHTTP(w, req)
-	} else {
-		gziphandler.GzipHandler(s.r).ServeHTTP(w, req)
-	}
+
+	_, handler := newrelic.WrapHandle(nrApp, "/", gziphandler.GzipHandler(s.r))
+	handler.ServeHTTP(w, req)
 }
 
 func setupHTTPServer() {
 	server = Server{
 		r: mux.NewRouter(),
 	}
+
+	nrgorilla.InstrumentRoutes(server.r, nrApp)
 }

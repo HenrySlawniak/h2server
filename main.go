@@ -80,6 +80,8 @@ func init() {
 		var err error
 		nrConf := newrelic.NewConfig("h2server", nrKey)
 		nrConf.Logger = nrlogrus.StandardLogger()
+		nrConf.DistributedTracer.Enabled = true
+		nrConf.BrowserMonitoring.Enabled = true
 
 		nrApp, err = newrelic.NewApplication(nrConf)
 		if err != nil {
