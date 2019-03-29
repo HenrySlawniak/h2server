@@ -22,7 +22,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-playground/log"
 	"net"
 	"net/http"
 	"os"

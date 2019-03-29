@@ -24,9 +24,9 @@ import (
 	"bufio"
 	"crypto/tls"
 	"flag"
-	"github.com/go-playground/log"
-	"github.com/go-playground/log/handlers/console"
 	"github.com/newrelic/go-agent"
+	"github.com/newrelic/go-agent/_integrations/nrlogrus"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/acme/autocert"
 	"golang.org/x/net/http2"
 	"net/http"
@@ -40,6 +40,7 @@ var (
 	commit     string
 	domainList = []string{}
 	m          autocert.Manager
+	log        *logrus.Logger
 
 	devMode            bool
 	domain             string
@@ -54,9 +55,8 @@ func init() {
 	flag.Parse()
 	os.Setenv("GODEBUG", os.Getenv("GODEBUG")+",tls13=1")
 
-	cLog := console.New(true)
-	cLog.SetTimestampFormat(time.RFC3339)
-	log.AddHandler(cLog, log.AllLevels...)
+	log = logrus.New()
+	log.SetLevel(logrus.DebugLevel)
 
 	// <phil> I hate this stuff so much, I try to avoid it - environment variables have shortened my life in I'm sure a measurable way
 	devMode = os.Getenv("DEV") == "true" || false
@@ -79,6 +79,8 @@ func init() {
 		log.Info("Setting up New Relic Go Agent")
 		var err error
 		nrConf := newrelic.NewConfig("h2server", nrKey)
+		nrConf.Logger = nrlogrus.StandardLogger()
+
 		nrApp, err = newrelic.NewApplication(nrConf)
 		if err != nil {
 			log.Panic(err)
@@ -177,7 +179,7 @@ func addToDomainList(domain string) {
 
 	for _, d := range domainList {
 		if d == domain {
-			log.Noticef("%s already in domain list, returning\n", domain)
+			log.Infof("%s already in domain list, returning\n", domain)
 			return
 		}
 	}
@@ -214,5 +216,5 @@ func loadDomainList() {
 		addToDomainList(scanner.Text())
 	}
 
-	log.Noticef("There are now %d domains registered\n", len(domainList))
+	log.Infof("There are now %d domains registered\n", len(domainList))
 }

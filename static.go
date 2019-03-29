@@ -23,7 +23,6 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/go-playground/log"
 	"io"
 	"mime"
 	"net/http"
