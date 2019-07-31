@@ -11,4 +11,7 @@ FROM scratch
 
 COPY --from=builder /go/bin/h2server /bin/h2server
 
+EXPOSE 80/tcp
+EXPOSE 443/tcp
+
 ENTRYPOINT ["/bin/h2server"]
