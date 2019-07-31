@@ -33,6 +33,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -189,6 +190,7 @@ func domainIsRegistered(domain string) bool {
 }
 
 func addToDomainList(domain string) {
+	domain = strings.TrimSpace(domain)
 	log.Infof("Adding %s to domain list", domain)
 	if domain == "" {
 		log.Warn("Cannot use an empty string as a domain")
@@ -232,6 +234,13 @@ func loadDomainList() {
 
 	for scanner.Scan() {
 		addToDomainList(scanner.Text())
+	}
+
+	envDomains, found := os.LookupEnv("DOMAINS")
+	if found {
+		for _, domain := range strings.Split(envDomains, ",") {
+			addToDomainList(domain)
+		}
 	}
 
 	log.Infof("There are now %d domains registered\n", len(domainList))
