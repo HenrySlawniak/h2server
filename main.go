@@ -50,7 +50,7 @@ var (
 	dial               string
 	accessLogInConsole bool
 	nrKey              string
-	nrApp              newrelic.Application
+	nrApp              *newrelic.Application
 
 	logFile = filepath.Join(".logs", "access.log")
 	f       *os.File
@@ -88,10 +88,12 @@ func init() {
 		nrConf.DistributedTracer.Enabled = true
 		nrConf.BrowserMonitoring.Enabled = true
 
-		nrApp, err = newrelic.NewApplication(nrConf)
+		app, err := newrelic.NewApplication(nrConf)
 		if err != nil {
 			log.Panic(err)
 		}
+
+		nrApp = &app
 	}
 
 	var err error

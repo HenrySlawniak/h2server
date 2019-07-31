@@ -39,7 +39,9 @@ func addRoutesToRouter() {
 
 	server.r.PathPrefix("/").HandlerFunc(server.indexHandler).Name("catch-all")
 
-	server.r = nrgorilla.InstrumentRoutes(server.r, nrApp)
+	if nrApp != nil {
+		server.r = nrgorilla.InstrumentRoutes(server.r, *nrApp)
+	}
 }
 
 // GetIP returns the remote ip of the request, by stripping off the port from the RemoteAddr
