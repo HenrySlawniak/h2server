@@ -5,11 +5,7 @@ RUN apk add git
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/h2server
-
-FROM scratch
-
-COPY --from=builder /go/bin/h2server /bin/h2server
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin/h2server
 
 EXPOSE 80/tcp
 EXPOSE 443/tcp
