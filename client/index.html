@@ -44,6 +44,7 @@
 
     video {
       max-width: 90vw;
+      outline: none;
     }
   </style>
 </head>
@@ -55,15 +56,6 @@
       var vid = document.querySelector("video");
       window.requestAnimationFrame(_ => {
         vid.volume = 0.01;
-        // vid.play();
-        // vid.onclick = function (){
-        //   if (vid.paused) {
-        //     vid.play();
-        //   }
-        //   else {
-        //     vid.pause();
-        //   }
-        // }
       });
     });
   </script>
