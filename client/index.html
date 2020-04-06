@@ -44,12 +44,27 @@
 
     video {
       max-width: 90vw;
+      margin-bottom: 3rem;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      color: #d0d0d0;
+    }
+
+    a:visited {
+      color: default;
     }
   </style>
 </head>
 
 <body>
   <video src="/static/nosauce.webm" controls loop></video>
+  <a href="https://twitter.com/meggavolts">yell at me.</a>
   <script>
     document.addEventListener("DOMContentLoaded", _ => {
       var vid = document.querySelector("video");
