@@ -49,8 +49,14 @@ func init() {
 }
 
 func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int) {
-	txn := nrApp.StartTransaction("serve-"+path, w, r)
-	defer txn.End()
+	var txn newrelic.Transaction
+	var txnPtr *newrelic.Transaction
+	if nrApp != nil {
+		app := *nrApp
+		txn = app.StartTransaction("serve-"+path, w, r)
+		txnPtr = &txn
+		defer txn.End()
+	}
 
 	if path == "./client/" {
 		path = "./client/index.html"
@@ -60,21 +66,35 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int)
 		path = "./stopall/client/index.html"
 	}
 
-	seg := newrelic.StartSegment(txn, "stat-"+path)
+	var seg *newrelic.Segment
+
+	if txnPtr != nil {
+		seg = newrelic.StartSegment(txn, "stat-"+path)
+	}
+
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		log.Error(err)
 		return 0, http.StatusNotFound
 	}
-	seg.End()
 
-	seg = newrelic.StartSegment(txn, "sum-"+path)
+	if txnPtr != nil {
+		seg.End()
+	}
+
+	if txnPtr != nil {
+		seg = newrelic.StartSegment(txn, "sum-"+path)
+	}
+
 	sum, err := getFileSum(path)
 	if err != nil {
 		log.Error(err)
 		return 0, http.StatusInternalServerError
 	}
-	seg.End()
+
+	if txnPtr != nil {
+		seg.End()
+	}
 
 	w.Header().Set("Content-Type", mime.TypeByExtension(filepath.Ext(path)))
 	if w.Header().Get("Cache-Control") == "" {

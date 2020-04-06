@@ -33,6 +33,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -49,7 +50,7 @@ var (
 	dial               string
 	accessLogInConsole bool
 	nrKey              string
-	nrApp              newrelic.Application
+	nrApp              *newrelic.Application
 
 	logFile = filepath.Join(".logs", "access.log")
 	f       *os.File
@@ -87,10 +88,12 @@ func init() {
 		nrConf.DistributedTracer.Enabled = true
 		nrConf.BrowserMonitoring.Enabled = true
 
-		nrApp, err = newrelic.NewApplication(nrConf)
+		app, err := newrelic.NewApplication(nrConf)
 		if err != nil {
 			log.Panic(err)
 		}
+
+		nrApp = &app
 	}
 
 	var err error
@@ -189,6 +192,7 @@ func domainIsRegistered(domain string) bool {
 }
 
 func addToDomainList(domain string) {
+	domain = strings.TrimSpace(domain)
 	log.Infof("Adding %s to domain list", domain)
 	if domain == "" {
 		log.Warn("Cannot use an empty string as a domain")
@@ -232,6 +236,13 @@ func loadDomainList() {
 
 	for scanner.Scan() {
 		addToDomainList(scanner.Text())
+	}
+
+	envDomains, found := os.LookupEnv("DOMAINS")
+	if found {
+		for _, domain := range strings.Split(envDomains, ",") {
+			addToDomainList(domain)
+		}
 	}
 
 	log.Infof("There are now %d domains registered\n", len(domainList))
