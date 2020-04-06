@@ -9,3 +9,4 @@ certs/*
 sites/*
 domains.txt
 ./h2server
+h2server
