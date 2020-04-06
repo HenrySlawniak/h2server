@@ -73,20 +73,16 @@ func init() {
 
 	}
 
-	if found {
-		log.Info("Setting up New Relic Go Agent")
-		var err error
-		app, err = newrelic.NewApplication(
-			newrelic.ConfigFromEnvironment(),
-			nrlogrus.ConfigStandardLogger(),
-			newrelic.ConfigAppName("h2server"),
-		)
-		if err != nil {
-			log.Panic(err)
-		}
-	}
-
+	log.Info("Setting up New Relic Go Agent")
 	var err error
+	app, err = newrelic.NewApplication(
+		newrelic.ConfigFromEnvironment(),
+		nrlogrus.ConfigStandardLogger(),
+		newrelic.ConfigAppName("h2server"),
+	)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	if _, err = os.Stat(filepath.Dir(logFile)); os.IsNotExist(err) {
 		os.MkdirAll(filepath.Dir(logFile), 0755)
