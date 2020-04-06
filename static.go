@@ -23,7 +23,8 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/newrelic/go-agent"
+	"github.com/newrelic/go-agent/v3/newrelic"
+	log "github.com/sirupsen/logrus"
 	"io"
 	"mime"
 	"net/http"
@@ -49,12 +50,9 @@ func init() {
 }
 
 func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int) {
-	var txn newrelic.Transaction
-	var txnPtr *newrelic.Transaction
-	if nrApp != nil {
-		app := *nrApp
-		txn = app.StartTransaction("serve-"+path, w, r)
-		txnPtr = &txn
+	var txn *newrelic.Transaction
+	if app != nil {
+		txn = app.StartTransaction("serve-" + path)
 		defer txn.End()
 	}
 
@@ -68,7 +66,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int)
 
 	var seg *newrelic.Segment
 
-	if txnPtr != nil {
+	if txn != nil {
 		seg = newrelic.StartSegment(txn, "stat-"+path)
 	}
 
@@ -78,11 +76,11 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int)
 		return 0, http.StatusNotFound
 	}
 
-	if txnPtr != nil {
+	if txn != nil {
 		seg.End()
 	}
 
-	if txnPtr != nil {
+	if txn != nil {
 		seg = newrelic.StartSegment(txn, "sum-"+path)
 	}
 
@@ -92,7 +90,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) (int64, int)
 		return 0, http.StatusInternalServerError
 	}
 
-	if txnPtr != nil {
+	if txn != nil {
 		seg.End()
 	}
 

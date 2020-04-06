@@ -7,6 +7,9 @@ require (
 	github.com/gorilla/mux v1.7.4
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/newrelic/go-agent v3.4.0+incompatible
+	github.com/newrelic/go-agent/v3 v3.4.0
+	github.com/newrelic/go-agent/v3/integrations/nrgorilla v1.1.0
+	github.com/newrelic/go-agent/v3/integrations/nrlogrus v1.0.0
 	github.com/sirupsen/logrus v1.5.0
 	golang.org/x/crypto v0.0.0-20200403201458-baeed622b8d8
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e

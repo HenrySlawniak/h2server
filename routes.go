@@ -21,7 +21,7 @@
 package main
 
 import (
-	nrgorilla "github.com/newrelic/go-agent/_integrations/nrgorilla/v1"
+	"github.com/newrelic/go-agent/v3/integrations/nrgorilla"
 	"net/http"
 	"os"
 	"strings"
@@ -39,8 +39,8 @@ func addRoutesToRouter() {
 
 	server.r.PathPrefix("/").HandlerFunc(server.indexHandler).Name("catch-all")
 
-	if nrApp != nil {
-		server.r = nrgorilla.InstrumentRoutes(server.r, *nrApp)
+	if app != nil {
+		server.r = nrgorilla.InstrumentRoutes(server.r, app)
 	}
 }
 
@@ -78,12 +78,6 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 
 	host := strings.Split(r.Host, ":")[0]
-
-	// if !domainIsRegistered(host) {
-	// 	log.Debugf("Host is %s", host)
-	// 	// Make sure we do this syncronousley
-	// 	addToDomainList(host)
-	// }
 
 	staticFolder := "./sites/" + host
 	if _, err := os.Stat(staticFolder); err != nil {

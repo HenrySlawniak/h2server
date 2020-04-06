@@ -22,6 +22,7 @@ package main
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
 	"strings"
@@ -73,7 +74,5 @@ func logRequest(w http.ResponseWriter, r *http.Request, bytes int64, responseCod
 
 	f.WriteString(logStr + "\n")
 
-	if accessLogInConsole {
-		log.Info(logStr)
-	}
+	log.Info(logStr)
 }

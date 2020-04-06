@@ -24,9 +24,9 @@ import (
 	"bufio"
 	"crypto/tls"
 	"flag"
-	"github.com/newrelic/go-agent"
-	"github.com/newrelic/go-agent/_integrations/nrlogrus"
-	"github.com/sirupsen/logrus"
+	"github.com/newrelic/go-agent/v3/integrations/nrlogrus"
+	"github.com/newrelic/go-agent/v3/newrelic"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/acme/autocert"
 	"golang.org/x/net/http2"
 	"net/http"
@@ -42,15 +42,13 @@ var (
 	commit     string
 	domainList = []string{}
 	m          autocert.Manager
-	log        *logrus.Logger
 
-	devMode            bool
-	domain             string
-	listen             string
-	dial               string
-	accessLogInConsole bool
-	nrKey              string
-	nrApp              *newrelic.Application
+	devMode bool
+	domain  string
+	listen  string
+	dial    string
+	nrKey   string
+	app     *newrelic.Application
 
 	logFile = filepath.Join(".logs", "access.log")
 	f       *os.File
@@ -60,12 +58,8 @@ func init() {
 	flag.Parse()
 	os.Setenv("GODEBUG", os.Getenv("GODEBUG")+",tls13=1")
 
-	log = logrus.New()
-	log.SetLevel(logrus.DebugLevel)
-
 	// <phil> I hate this stuff so much, I try to avoid it - environment variables have shortened my life in I'm sure a measurable way
 	devMode = os.Getenv("DEV") == "true" || false
-	accessLogInConsole = os.Getenv("CONSOLE_ACCESS") == "true" || false
 	var found bool
 
 	domain, found = os.LookupEnv("DOMAIN")
@@ -79,21 +73,17 @@ func init() {
 
 	}
 
-	nrKey, found = os.LookupEnv("NR_KEY")
 	if found {
 		log.Info("Setting up New Relic Go Agent")
 		var err error
-		nrConf := newrelic.NewConfig("h2server", nrKey)
-		nrConf.Logger = nrlogrus.StandardLogger()
-		nrConf.DistributedTracer.Enabled = true
-		nrConf.BrowserMonitoring.Enabled = true
-
-		app, err := newrelic.NewApplication(nrConf)
+		app, err = newrelic.NewApplication(
+			newrelic.ConfigFromEnvironment(),
+			nrlogrus.ConfigStandardLogger(),
+			newrelic.ConfigAppName("h2server"),
+		)
 		if err != nil {
 			log.Panic(err)
 		}
-
-		nrApp = &app
 	}
 
 	var err error
